@@ -18,7 +18,7 @@ Colour ID 1-9 = GUI CONSOLE OUTPUT, colour is defined in extLOG.ini
 ```
 "extLOG" callExtension "1:SERVER:Starting";
 ```
-Output message Starting to GUI Console
+Output message Starting to GUI Console  
 Output message to logfile SERVER.log.  
 
 
