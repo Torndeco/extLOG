@@ -18,19 +18,19 @@ Colour ID 1-9 = GUI CONSOLE OUTPUT, colour is defined in extLOG.ini
 ```
 "extLOG" callExtension "1:SERVER:Starting";
 ```
-Will output message Starting to GUI Console
-Will output message to logfile SERVER.log.
+Output message Starting to GUI Console
+Output message to logfile SERVER.log.  
 
 
 ```
 "extLOG" callExtension "1::Starting";
 ```
-Will output message Starting to GUI Console only.
+Output message Starting to GUI Console only.  
 
 ```
 "extLOG" callExtension "0:SERVER:Starting";
 ```
-Will ouput message Starting to logfile SERVER.log only.
+Output message Starting to logfile SERVER.log only.  
 
 
 #### Download at
