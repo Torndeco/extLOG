@@ -4,14 +4,20 @@ Its a simple logger with support for output to multiple files + GUI Console Wind
 
 
 #### Syntax
-```<Colour ID>:<Log Filename>:<Message>```
-```<Colour ID>::<Message>```  
+```
+<Colour ID>:<Log Filename>:<Message>
+```  
+```
+<Colour ID>::<Message>
+```  
 
 Colour ID 0 = NO OUTPUT TO GUI CONSOLE
 Colour ID 1-9 = GUI CONSOLE OUTPUT, colour is defined in extLOG.ini
 
 For example
-```1:SERVER:Starting```
+```
+1:SERVER:Starting
+```
 Will output message Starting to GUI Console using colour 1 + logfile SERVER.log.
 
 
