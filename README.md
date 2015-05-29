@@ -16,15 +16,20 @@ Colour ID 1-9 = GUI CONSOLE OUTPUT, colour is defined in extLOG.ini
 
 For example
 ```
-1:SERVER:Starting
+"extLOG" callExtension "1:SERVER:Starting";
 ```
-Will output message Starting to GUI Console using colour 1 + logfile SERVER.log.
+Will output message Starting to GUI Console
+Will output message to logfile SERVER.log.
 
 
-```1::Starting```
+```
+"extLOG" callExtension "1::Starting";
+```
 Will output message Starting to GUI Console only.
 
-```0:SERVER:Starting```
+```
+"extLOG" callExtension "0:SERVER:Starting";
+```
 Will ouput message Starting to logfile SERVER.log only.
 
 
