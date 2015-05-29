@@ -11,10 +11,10 @@ Its a simple logger with support for output to multiple files + GUI Console Wind
 <Colour ID>::<Message>
 ```  
 
-Colour ID 0 = NO OUTPUT TO GUI CONSOLE
-Colour ID 1-9 = GUI CONSOLE OUTPUT, colour is defined in extLOG.ini
+Colour ID 0 = NO OUTPUT TO GUI CONSOLE  
+Colour ID 1-9 = GUI CONSOLE OUTPUT, colour is defined in extLOG.ini  
 
-For example
+#### Examples
 ```
 "extLOG" callExtension "1:SERVER:Starting";
 ```
