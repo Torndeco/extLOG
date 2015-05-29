@@ -31,6 +31,7 @@ Output message Starting to GUI Console only.
 "extLOG" callExtension "0:SERVER:Starting";
 ```
 Output message Starting to logfile SERVER.log only.  
+Note you can also disable GUI Window Output via extLOG.ini file
 
 
 #### Download at
