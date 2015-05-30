@@ -67,6 +67,7 @@ class Ext
 		boost::asio::io_service io_service;
 		boost::thread_group threads;
 
+		bool flush = true;
 		bool enable_console = true;
 		std::unordered_map<int, std::string> colors;
 

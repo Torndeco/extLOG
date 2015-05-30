@@ -31,15 +31,13 @@ endif()
 
 
 SET(SOURCES
+	../src/memory_allocator.cpp
 	../src/ext.cpp
 	../src/main.cpp
+	../src/dll.rc
 )
 
 SET(COMPILE_EXTENSION TRUE CACHE BOOL "Compile extLog")
-SET(COMPILE_TEST_APPLICATION FALSE CACHE BOOL "Compiles a test application of extLog.")
-
-SET(DEBUG_LOGGING FALSE CACHE BOOL "Enable Debug Logging.")
-SET(DEBUG_TESTING FALSE CACHE BOOL "Enable extra Console Output.")
 
 
 set(EXECUTABLE_NAME "extLOG")
@@ -53,7 +51,7 @@ if(${UNIX})
      set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
 endif()
 
-# OpenSSL Headers 
+# OpenSSL Headers
 find_package(OpenSSL)
 if(OPENSSL_FOUND)
 	include_directories("${OPENSSL_INCLUDE_DIR}")

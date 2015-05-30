@@ -64,6 +64,8 @@ Ext::Ext(std::string shared_library_path)
 			colors[7] = pConf->getString(("Main.Colour 7"), "default");
 			colors[8] = pConf->getString(("Main.Colour 8"), "default");
 			colors[9] = pConf->getString(("Main.Colour 9"), "default");
+
+			flush = pConf->getBool(("Main.Flush"), true);
 		}
 
 		if (enable_console)
@@ -156,7 +158,7 @@ void Ext::processMessage(std::string input_str)
 	{
 		if (loggers.count(filename) == 0)
 		{
-			loggers[filename] = spdlog::rotating_logger_mt(filename, log_path_str + "\\" + filename, 1048576 * 100, 3, true);
+			loggers[filename] = spdlog::rotating_logger_mt(filename, log_path_str + "\\" + filename, 1048576 * 100, 3, flush);
 		}
 		loggers[filename]->info("{0}", input_str);
 	}
