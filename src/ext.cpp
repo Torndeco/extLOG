@@ -49,7 +49,6 @@ Ext::Ext(std::string shared_library_path)
 		config_path = config_path.parent_path();
 		config_path /= "extLOG.ini";
 
-		std::unordered_map<int, std::string> colors;
 		if (boost::filesystem::exists(config_path))
 		{
 			Poco::AutoPtr<Poco::Util::IniFileConfiguration> pConf(new Poco::Util::IniFileConfiguration(config_path.make_preferred().string()));
@@ -82,11 +81,11 @@ Ext::Ext(std::string shared_library_path)
 
 		spdlog::set_level(spdlog::level::trace);
 		spdlog::set_pattern("[%H:%M:%S:%e] %v");
+		console = spdlog::windows_console_sink_mt("extLOG Console Logger", colors);
 
-		auto console_temp = spdlog::windows_console_sink_mt("extLOG Console Logger", colors);
-		console.swap(console_temp);
-		size_t q_size = 1048576; //queue size must be power of 2
-		spdlog::set_async_mode(q_size);
+		// ASIO IO SERVICE
+		io_work_ptr.reset(new boost::asio::io_service::work(io_service));
+		threads.create_thread(boost::bind(&boost::asio::io_service::run, &io_service));
 	}
 	catch (const boost::filesystem::filesystem_error& e)
 	{
@@ -98,59 +97,77 @@ Ext::Ext(std::string shared_library_path)
 
 Ext::~Ext(void)
 {
+	stop();
 }
 
 
+void Ext::stop()
+{
+	#ifdef DEBUG_TESTING
+		console->info("extLOG: Stopping ...");
+	#endif
+	io_work_ptr.reset();
+	threads.join_all();
+	io_service.stop();
+}
+
+
+void Ext::processMessage(std::string input_str)
+{
+	std::string::size_type found = input_str.find(':', 2);
+	std::string message = input_str.substr(found + 1);
+
+	if (enable_console)
+	{
+		switch (input_str[0])
+		{
+		case '1':
+			console->trace("{0}", message);
+			break;
+		case '2':
+			console->debug("{0}", message);
+			break;
+		case '3':
+			console->info("{0}", message);
+			break;
+		case '4':
+			console->notice("{0}", message);
+			break;
+		case '5':
+			console->warn("{0}", message);
+			break;
+		case '6':
+			console->error("{0}", message);
+			break;
+		case '7':
+			console->critical("{0}", message);
+			break;
+		case '8':
+			console->alert("{0}", message);
+			break;
+		case '9':
+			console->emerg("{0}", message);
+			break;
+		}
+	}
+
+	std::string filename = input_str.substr(2, found - 2);
+	if (!(filename.empty()))
+	{
+		if (loggers.count(filename) == 0)
+		{
+			loggers[filename] = spdlog::rotating_logger_mt(filename, log_path_str + "\\" + filename, 1048576 * 100, 3, true);
+		}
+		loggers[filename]->info("{0}", input_str);
+	}
+}
+
 void Ext::callExtension(char *output, const int &output_size, const char *function)
 {
-	std::string input_str = function;
+	std::string input_str(function);
 	if (input_str.size() > 2)
 	{
-		std::string::size_type found = input_str.find(':', 2);
-		std::string message = input_str.substr(found + 1);
-
-		if (enable_console)
-		{
-			switch (input_str[0])
-			{
-				case '1':
-					console->trace("{0}", message);
-					break;
-				case '2':
-					console->debug("{0}", message);
-					break;
-				case '3':
-					console->info("{0}", message);
-					break;
-				case '4':
-					console->notice("{0}", message);
-					break;
-				case '5':
-					console->warn("{0}", message);
-					break;
-				case '6':
-					console->error("{0}", message);
-					break;
-				case '7':
-					console->critical("{0}", message);
-					break;
-				case '8':
-					console->alert("{0}", message);
-					break;
-				case '9':
-					console->emerg("{0}", message);
-					break;
-			}
-		}
-
-		std::string filename = input_str.substr(2, found - 2);
-		if (!(filename.empty()))
-		{
-			if (loggers.count(filename) == 0)
-			{
-				loggers[filename] = spdlog::rotating_logger_mt(filename, log_path_str + "\\" + filename , 1048576 * 100, 3, false);
-			}
-			loggers[filename]->info("{0}", input_str);
-		}
+		io_service.post(boost::bind(&Ext::processMessage, this, std::move(input_str)));
+		std::strcpy(output, "[1]");
 	}
 }
