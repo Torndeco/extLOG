@@ -1,6 +1,8 @@
 ## Arma3 Extension Logger + Console Window (windows  only atm)
 
-Its a simple logger with support for output to multiple files + GUI Console Window.
+Its a simple logger with support for output to multiple files + GUI Console Window.  
+  
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2SUEFTGABTAM2"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" alt="[paypal]" />
 
 
 #### Syntax
@@ -44,8 +46,3 @@ Windows 7 + Later
 
 Install vcredist_x86.exe  
 http://www.microsoft.com/en-ie/download/details.aspx?id=40784  
-
-#### Donation Link @  
-
-https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2SUEFTGABTAM2
- 
